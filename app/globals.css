@@ -784,6 +784,49 @@ a {
   line-height: 1.65;
 }
 
+.setup-content {
+  max-width: 720px;
+  padding-top: 68px;
+}
+
+.setup-content .dashboard-title {
+  margin-top: 12px;
+}
+
+.setup-content .welcome-copy strong {
+  color: #4c6152;
+  font-weight: 600;
+}
+
+.setup-notice {
+  margin-top: 36px;
+  padding: 22px 24px;
+  border: 1px solid #e8d9ae;
+  border-radius: 12px;
+  background: #fffaf0;
+  color: #5a5140;
+}
+
+.setup-notice h2 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 21px;
+  font-weight: 400;
+}
+
+.setup-notice p {
+  margin: 9px 0 0;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.setup-notice code {
+  padding: 2px 5px;
+  border-radius: 4px;
+  background: rgba(92, 82, 57, 0.08);
+  font-size: 12px;
+}
+
 .dashboard-footer {
   display: flex;
   align-items: center;

@@ -46,6 +46,41 @@ function formatNoteDate(value: string) {
   }).format(new Date(value));
 }
 
+function NotesSetupNotice({ email }: { email: string }) {
+  return (
+    <main className="dashboard-shell">
+      <header className="topbar">
+        <div className="topbar-inner">
+          <Brand />
+          <div className="account-menu">
+            <span className="account-email">{email}</span>
+            <form action={signOut}>
+              <button className="signout-button" type="submit">
+                Log out
+              </button>
+            </form>
+          </div>
+        </div>
+      </header>
+      <div className="dashboard-content setup-content">
+        <p className="eyebrow dashboard-eyebrow">ACCOUNT READY</p>
+        <h1 className="dashboard-title">You&apos;re signed in.</h1>
+        <p className="welcome-copy">
+          Logged in as <strong>{email}</strong>
+        </p>
+        <section aria-labelledby="setup-title" className="setup-notice" role="alert">
+          <h2 id="setup-title">One more setup step</h2>
+          <p>
+            The notes table isn&apos;t set up in Supabase yet. Run{" "}
+            <code>db/schema.sql</code> once in the project&apos;s SQL Editor.
+            Notes can be saved as soon as the table is ready.
+          </p>
+        </section>
+      </div>
+    </main>
+  );
+}
+
 export default async function Home() {
   const supabase = await createClient();
   const user = await getCurrentUser(supabase);
@@ -60,6 +95,10 @@ export default async function Home() {
     .order("created_at", { ascending: false });
 
   if (notesError) {
+    if (notesError.code === "PGRST205") {
+      return <NotesSetupNotice email={user.email ?? "Your account"} />;
+    }
+
     throw notesError;
   }
 

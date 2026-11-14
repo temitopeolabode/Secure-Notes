@@ -42,7 +42,8 @@ export async function authenticate(
     if (!data.session) {
       return {
         mode,
-        notice: "Your account was created. Check your email to finish signing in.",
+        notice:
+          "Email confirmation is required for this project. Confirm the link in your inbox before logging in, or turn off email confirmation in Supabase Authentication settings for immediate access.",
       };
     }
   } else {
