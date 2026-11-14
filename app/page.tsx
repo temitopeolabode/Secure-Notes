@@ -185,6 +185,13 @@ export default async function Home() {
                       <time dateTime={note.created_at}>
                         {formatNoteDate(note.created_at)}
                       </time>
+                      <Link
+                        aria-label={`Edit ${note.title}`}
+                        className="note-edit-link"
+                        href={`/notes/${note.id}`}
+                      >
+                        Edit
+                      </Link>
                     </div>
                     <h3>{note.title}</h3>
                     <p className="note-body">
