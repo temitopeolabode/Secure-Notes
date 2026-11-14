@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Quietnote
 
-## Getting Started
+A calm, private notes app for tutors. Each tutor signs in with an email and
+password and can create, edit, and delete their own plain-text student notes.
+Supabase Row Level Security enforces ownership in the database.
 
-First, run the development server:
+## Set up Supabase
+
+1. In the Supabase project, open **SQL Editor**, run [`db/schema.sql`](./db/schema.sql)
+   once, and verify that the `notes` table has RLS enabled and four policies.
+2. In **Authentication → Providers → Email**, turn off email confirmation for
+   this project.
+3. Add the project URL and publishable key to `.env.local`:
+
+   ```dotenv
+   NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
+   ```
+
+   Do not add a database password or service-role key to this app.
+
+## Run locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). Visitors who are not signed
+in are sent to `/login`. Create an account with a valid email address and a
+password of at least eight characters.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Verify the privacy boundary
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Sign in as tutor A, create a note, and copy its `/notes/<id>` address. Sign in
+as tutor B in a separate browser or device: the notebook should be empty, and
+opening A's address should show the not-found page. Sign out of A and use Back
+or refresh; the login page should appear instead of the notebook.
 
-## Learn More
+The app never supplies `user_id` when creating a note or filters by it in
+queries. The database supplies `auth.uid()` and the four RLS policies isolate
+reads and writes. Keep `db/schema.sql` committed; keep `.env.local` private.
 
-To learn more about Next.js, take a look at the following resources:
+## Validate and deploy
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run lint
+npm run build
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+For Vercel, add `NEXT_PUBLIC_SUPABASE_URL` and
+`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` to the project’s Production environment,
+then deploy from this directory with `npx vercel --prod`.
