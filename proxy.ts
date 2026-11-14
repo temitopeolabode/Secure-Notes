@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { getCurrentUser } from "@/lib/supabase/server";
 
 function getSupabaseConfig() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -44,14 +45,7 @@ export async function proxy(request: NextRequest) {
     },
   });
 
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.getUser();
-
-  if (error) {
-    throw error;
-  }
+  const user = await getCurrentUser(supabase);
 
   const isLoginPage = request.nextUrl.pathname === "/login";
 

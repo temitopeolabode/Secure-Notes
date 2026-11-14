@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, getCurrentUser } from "@/lib/supabase/server";
 import { EditNoteForm } from "./edit-note-form";
+
+export const instant = false;
 
 type Note = {
   id: number;
@@ -23,14 +25,7 @@ export default async function EditNotePage({
   }
 
   const supabase = await createClient();
-  const {
-    data: { user },
-    error: userError,
-  } = await supabase.auth.getUser();
-
-  if (userError) {
-    throw userError;
-  }
+  const user = await getCurrentUser(supabase);
 
   if (!user) {
     redirect("/login");

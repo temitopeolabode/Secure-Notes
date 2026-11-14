@@ -935,6 +935,80 @@ a {
   background: #fff2ef;
 }
 
+.not-found-shell {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 24px;
+  background:
+    radial-gradient(ellipse at 91% 8%, rgba(226, 232, 216, 0.55), transparent 28%),
+    var(--paper);
+}
+
+.not-found-shell > .brand {
+  align-self: flex-start;
+  color: var(--green-dark);
+}
+
+.not-found-shell .brand-mark {
+  border-color: #dce8da;
+  background: #edf3eb;
+}
+
+.not-found-card {
+  display: flex;
+  width: min(100%, 440px);
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 36px 0;
+  text-align: center;
+}
+
+.not-found-mark {
+  display: grid;
+  width: 66px;
+  height: 66px;
+  place-items: center;
+  margin-bottom: 25px;
+  border-radius: 20px;
+  background: #eaf1e8;
+  color: #638369;
+}
+
+.not-found-mark svg {
+  width: 36px;
+  height: 36px;
+}
+
+.not-found-card .eyebrow {
+  margin-bottom: 9px;
+}
+
+.not-found-card h1 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 37px;
+  font-weight: 400;
+  letter-spacing: -1.1px;
+}
+
+.not-found-card > p:not(.eyebrow) {
+  max-width: 330px;
+  margin: 12px 0 25px;
+  color: #7a857c;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.not-found-button {
+  min-height: 43px;
+  padding: 0 18px;
+  text-decoration: none;
+}
+
 @media (max-width: 760px) {
   .topbar-inner,
   .dashboard-content {

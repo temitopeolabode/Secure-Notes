@@ -2,7 +2,9 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { signOut } from "./login/actions";
 import { NoteComposer } from "./notes/note-composer";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, getCurrentUser } from "@/lib/supabase/server";
+
+export const instant = false;
 
 type Note = {
   id: number;
@@ -46,14 +48,7 @@ function formatNoteDate(value: string) {
 
 export default async function Home() {
   const supabase = await createClient();
-  const {
-    data: { user },
-    error: userError,
-  } = await supabase.auth.getUser();
-
-  if (userError) {
-    throw userError;
-  }
+  const user = await getCurrentUser(supabase);
 
   if (!user) {
     redirect("/login");

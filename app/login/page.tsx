@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { LoginForm } from "./login-form";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, getCurrentUser } from "@/lib/supabase/server";
+
+export const instant = false;
 
 function Brand() {
   return (
@@ -29,13 +31,9 @@ function Brand() {
 
 export default async function LoginPage() {
   const supabase = await createClient();
-  const { data, error } = await supabase.auth.getUser();
+  const user = await getCurrentUser(supabase);
 
-  if (error) {
-    throw error;
-  }
-
-  if (data.user) {
+  if (user) {
     redirect("/");
   }
 

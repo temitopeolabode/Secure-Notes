@@ -1,5 +1,11 @@
+import {
+  isAuthSessionMissingError,
+  type User,
+} from "@supabase/supabase-js";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+
+type SupabaseServerClient = Awaited<ReturnType<typeof createClient>>;
 
 function getSupabaseConfig() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -30,4 +36,19 @@ export async function createClient() {
       },
     },
   });
+}
+
+export async function getCurrentUser(
+  supabase: SupabaseServerClient,
+): Promise<User | null> {
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+
+  if (error && !isAuthSessionMissingError(error)) {
+    throw error;
+  }
+
+  return user;
 }

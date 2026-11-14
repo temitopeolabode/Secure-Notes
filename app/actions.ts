@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, getCurrentUser } from "@/lib/supabase/server";
 
 export type NoteActionState = {
   error?: string;
@@ -37,14 +37,7 @@ export async function createNote(
 
   const body = typeof bodyValue === "string" ? bodyValue : "";
   const supabase = await createClient();
-  const {
-    data: { user },
-    error: userError,
-  } = await supabase.auth.getUser();
-
-  if (userError) {
-    throw userError;
-  }
+  const user = await getCurrentUser(supabase);
 
   if (!user) {
     redirect("/login");
@@ -88,14 +81,7 @@ export async function updateNote(
   }
 
   const supabase = await createClient();
-  const {
-    data: { user },
-    error: userError,
-  } = await supabase.auth.getUser();
-
-  if (userError) {
-    throw userError;
-  }
+  const user = await getCurrentUser(supabase);
 
   if (!user) {
     redirect("/login");
@@ -131,14 +117,7 @@ export async function deleteNote(noteId: string) {
   }
 
   const supabase = await createClient();
-  const {
-    data: { user },
-    error: userError,
-  } = await supabase.auth.getUser();
-
-  if (userError) {
-    throw userError;
-  }
+  const user = await getCurrentUser(supabase);
 
   if (!user) {
     redirect("/login");
